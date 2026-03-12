@@ -16,7 +16,24 @@ class ImageController {
         val tempFile = File(System.getProperty("java.io.tmpdir"), file.originalFilename ?: "image.png")
         file.transferTo(tempFile)
 
-        return ResponseEntity.ok("Image received: ${tempFile.absolutePath}")
+        val process = ProcessBuilder(
+            "audiveris",
+            "-batch",
+            "-export",
+            "-output", "/tmp/output",
+            tempFile.absolutePath
+        )
+            .redirectErrorStream(true)
+            .start()
 
+        process.waitFor()
+
+        val outputFile = File("/tmp/output/${tempFile.nameWithoutExtension}.mxl")
+
+        return if (outputFile.exists()) {
+            ResponseEntity.ok(outputFile.readText())
+        } else {
+            ResponseEntity.status(500).body("Audiveris processing failed")
+        }
     }
 }
