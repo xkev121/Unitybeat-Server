@@ -7,6 +7,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteract
     tesseract-ocr \
     tesseract-ocr-eng \
     libfreetype6 \
+    xdg-utils \
     && rm -rf /var/lib/apt/lists/*
 
 RUN wget https://github.com/Audiveris/audiveris/releases/download/5.10.0/Audiveris-5.10.0-ubuntu22.04-x86_64.deb -O /tmp/audiveris.deb \
