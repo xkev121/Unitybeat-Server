@@ -1,9 +1,16 @@
 FROM ubuntu:22.04
 
-RUN apt-get update && apt-get install -y wget openjdk-17-jdk
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    openjdk-21-jdk \
+    wget \
+    git \
+    tesseract-ocr \
+    tesseract-ocr-eng \
+    libfreetype6 \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN wget https://github.com/Audiveris/audiveris/releases/download/5.10.0/Audiveris-5.10.0-ubuntu22.04-x86_64.deb -O /tmp/audiveris.deb \
-    && apt-get install -y /tmp/audiveris.deb \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y /tmp/audiveris.deb \
     && rm /tmp/audiveris.deb
 
 WORKDIR /app
